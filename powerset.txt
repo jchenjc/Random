@@ -1,0 +1,45 @@
+class PowerSet {
+    public static void main(String[] args) {
+        final List<Integer> inputList = Arrays.asList(1,2,3, 4);
+        final Set<Integer> base = new HashSet<>(inputList);
+        
+        final List<List<Integer>> result = powerset(base);
+        for (final List<Integer> subset : result) {
+            System.out.println(Arrays.toString(subset.toArray()));    
+        }
+    }
+    
+    /**
+    * Builds the powerset of a given set iteratively.
+    * For any given int in the input set:
+    *   Base:
+    *        result = {[]}
+    *   else:
+    *        pre-processing => result = {[], [i]}
+    *        processing = {[j], [i,j]}, where j != i
+    *        result.addAll(processing) => result = {[], [i], [j], [i,j]}
+    *   return result;
+    */
+    static List<List<Integer>> powerset(final Set<Integer> input) {
+        final List<List<Integer>> result = new ArrayList<>();
+        
+        // initializes with emptyset
+        result.add(new ArrayList<>());
+        
+        for (final Integer i : input) {
+            final List<List<Integer>> processing = new ArrayList<>();
+
+            for (final List<Integer> subset : result) {
+                final List<Integer> current = new ArrayList<>();
+                current.addAll(subset);
+                current.add(i);
+
+                processing.add(current);
+            }
+
+            result.addAll(processing);
+        }
+        
+        return result;
+    }
+}
